@@ -1,0 +1,13 @@
+# Recommended .gitignore File
+
+Create a file named `.gitignore` and add:
+
+```gitignore
+venv/
+__pycache__/
+*.pyc
+*.sqlite3
+media/
+.env
+.vscode/
+*.pt

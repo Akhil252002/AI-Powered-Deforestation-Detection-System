@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Analyst Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+      :root {
+        --bg-color: #2c3e50;
+        --text-color: white;
+        --card-bg: #34495e;
+        --sidebar-bg: #2c3e50;
+        --highlight: #f1c40f;
+        --button-bg: #e74c3c;
+        --button-hover: #c0392b;
+        --table-header-bg: #f1c40f;
+        --table-text: black;
+        --input-bg: #ecf0f1;
+        --input-border: #3498db;
+      }
+
+      .light-mode {
+        --bg-color: #f4f4f4;
+        --text-color: black;
+        --card-bg: white;
+        --sidebar-bg: #f8f9fa;
+        --highlight: #2c3e50;
+        --button-bg: #007bff;
+        --button-hover: #0056b3;
+        --table-header-bg: #2c3e50;
+        --table-text: white;
+        --input-bg: white;
+        --input-border: #007bff;
+      }
+
+      /* Reset */
+      body {
+        margin: 0;
+        font-family: "Arial", sans-serif;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        transition: 0.3s;
+      }
+
+      /* Sidebar */
+      .sidebar {
+        width: 270px;
+        background: var(--sidebar-bg);
+        color: var(--text-color);
+        height: 100vh;
+        position: fixed;
+        padding-top: 20px;
+        box-shadow: 4px 0 10px rgba(0, 0, 0, 0.3);
+      }
+
+      .sidebar h2 {
+        text-align: center;
+        padding-bottom: 15px;
+        font-size: 22px;
+        color: var(--highlight);
+        letter-spacing: 1px;
+        font-weight: bold;
+        border-bottom: 2px solid var(--highlight);
+      }
+
+      .sidebar ul {
+        list-style: none;
+        padding: 0;
+      }
+
+      .sidebar ul li {
+        padding: 15px;
+        font-size: 16px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        cursor: pointer;
+        transition: background 0.3s;
+      }
+
+      .sidebar ul li:hover {
+        background: var(--card-bg);
+      }
+
+      /* Main Content */
+      .main-content {
+        margin-left: 280px;
+        padding: 20px;
+      }
+
+      /* Card Styling */
+      .card {
+        background: var(--card-bg);
+        padding: 20px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        color: var(--text-color);
+      }
+
+      .card h3 {
+        font-size: 22px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      /* Table */
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      th {
+        background: var(--table-header-bg);
+        padding: 12px;
+        text-align: left;
+        font-size: 18px;
+        color: var(--table-text);
+      }
+
+      td {
+        padding: 12px;
+        border-bottom: 1px solid #ddd;
+      }
+
+      /* File Upload */
+      input[type="file"] {
+        border: 2px solid var(--input-border);
+        padding: 8px;
+        border-radius: 5px;
+        background: var(--input-bg);
+        font-size: 16px;
+      }
+
+      /* Buttons */
+      button {
+        background: var(--button-bg);
+        color: white;
+        padding: 12px;
+        border-radius: 5px;
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+        margin-top: 10px;
+      }
+
+      button:hover {
+        background: var(--button-hover);
+      }
+
+      /* Chart Styling */
+      canvas {
+        width: 100% !important;
+        height: auto !important;
+        max-height: 250px;
+      }
+
+      /* Theme Toggle Button */
+      .theme-toggle {
+        position: fixed; /* Change from absolute to fixed */
+        top: -5px;
+        right: 20px;
+        padding: 10px 18px;
+        font-size: 14px;
+        border-radius: 6px;
+        cursor: pointer;
+        background: var(--highlight);
+        color: var(--bg-color);
+        border: none;
+        z-index: 999; /* Ensure it appears above all elements */
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        transition: background 0.3s, color 0.3s;
+      }
+
+      .theme-toggle:hover {
+        opacity: 0.9;
+      }
+
+      .logout-btn {
+        width: 100%;
+        margin-top: 20px;
+        padding: 10px;
+        background-color: #e63946;
+        color: white;
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+        border-radius: 5px;
+      }
+
+      .logout-btn:hover {
+        background-color: #c62828;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <h2>📊 Analyst Dashboard</h2>
+
+      <ul>
+        <li><i>🏠</i> Dashboard</li>
+        <li><i>🚨</i> Deforestation Detection</li>
+        <li><i>🌲</i> Deforestation Trends</li>
+        {% comment %}
+        <li><i>🤖</i> AI Analysis</li>
+        {% endcomment %}
+        <li><i>📜</i> Reports</li>
+      </ul>
+
+      <!-- Logout button after Reports -->
+      <form
+        method="POST"
+        action="{% url 'logout' %}"
+        style="padding: 10px 20px"
+      >
+        {% csrf_token %}
+        <button type="submit" class="logout-btn">🔓 Logout</button>
+      </form>
+    </div>
+
+    <!-- Theme Toggle Button -->
+    <button class="theme-toggle" onclick="toggleTheme()">
+      🌗 Toggle Theme
+    </button>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+      />
+      <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+      />
+
+      <!-- Flex Container -->
+      <!-- Flex Container for All Three Stats -->
+      <!-- Flex Container for All Three Stats (Single Row) -->
+      <div class="w-100 overflow-auto">
+        <div class="d-flex gap-4 px-4 py-3" style="min-width: max-content">
+          <!-- Total Users Box -->
+          <div
+            class="card text-white shadow rounded-4"
+            style="
+              min-width: 20rem;
+              min-height: 140px;
+              background: linear-gradient(to top right, #3fd0f4, #e040fb);
+            "
+          >
+            <div
+              class="card-body d-flex justify-content-start align-items-start flex-column p-4"
+            >
+              <div class="d-flex align-items-center mb-3">
+                <i class="fas fa-users fa-2x opacity-75 me-3"></i>
+                <h5 class="card-title mb-0" style="font-size: 1.3rem">
+                  Total Users
+                </h5>
+              </div>
+              <h1 class="fw-bold" style="font-size: 2.5rem">
+                {{ user_count }}
+              </h1>
+            </div>
+          </div>
+
+          <!-- Total Regions Box -->
+          <div
+            class="card text-white shadow rounded-4"
+            style="
+              min-width: 20rem;
+              min-height: 140px;
+              background: linear-gradient(to top right, #00b09b, #96c93d);
+            "
+          >
+            <div
+              class="card-body d-flex justify-content-start align-items-start flex-column p-4"
+            >
+              <div class="d-flex align-items-center mb-3">
+                <i class="fas fa-globe fa-2x opacity-75 me-3"></i>
+                <h5 class="card-title mb-0" style="font-size: 1.3rem">
+                  Total Regions
+                </h5>
+              </div>
+              <h1 class="fw-bold" style="font-size: 2.5rem">
+                {{ region_count }}
+              </h1>
+            </div>
+          </div>
+
+          <!-- Total Forests Box -->
+          <div
+            class="card text-white shadow rounded-4"
+            style="
+              min-width: 20rem;
+              min-height: 140px;
+              background: linear-gradient(to top right, #2e8b57, #1e90ff);
+            "
+          >
+            <div
+              class="card-body d-flex justify-content-start align-items-start flex-column p-4"
+            >
+              <div class="d-flex align-items-center mb-3">
+                <i class="fas fa-tree fa-2x opacity-75 me-3"></i>
+                <h5 class="card-title mb-0" style="font-size: 1.3rem">
+                  Total Forests
+                </h5>
+              </div>
+              <h1 class="fw-bold" style="font-size: 2.5rem">
+                {{ forest_count }}
+              </h1>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Deforestation Trends Section (Initially Hidden) -->
+      <section id="deforestation-trends" class="card" style="display: none">
+        <h3>🌲 Deforestation Trends - Regional Identifications</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Region</th>
+              <th>Identifications</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in detection_trends %}
+            <tr>
+              <td>{{ forloop.counter }}</td>
+              <td>{{ item.region }}</td>
+              <td>{{ item.identifications }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </section>
+
+      {% comment %}
+      <!-- Illegal Logging & Threat Detection -->
+      <section class="card">
+        <h3>🚨 Illegal Logging & Threat Detection</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Activity</th>
+              <th>Confidence Score</th>
+              <th>Location</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Illegal Logging</td>
+              <td>92%</td>
+              <td>Amazon Rainforest</td>
+            </tr>
+            <tr>
+              <td>Mining</td>
+              <td>85%</td>
+              <td>Congo Basin</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+      {% endcomment %}
+
+      <!-- Deforestation Forecasting -->
+      <!-- Deforestation Forecasting (Now Includes Regions) -->
+
+      <section class="card">
+        <h3>📉 Deforestation Forecasting - Selected Regions</h3>
+        <canvas id="deforestationRegionChart"></canvas>
+      </section>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        var ctx = document
+          .getElementById("deforestationRegionChart")
+          .getContext("2d");
+
+        var deforestationRegionChart = new Chart(ctx, {
+          type: "bar",
+          data: {
+            labels: [
+              "Dharwad",
+              "Kerala",
+              "Hampi",
+              "Yellapur",
+              "Ooty",
+              "Coorg",
+              "Munnar",
+              "Karwar",
+            ],
+            datasets: [
+              {
+                label: "Deforestation (%)",
+                data: [15, 12, 20, 18, 25, 22, 30, 10], // Example values based on deforestation risk
+                backgroundColor: [
+                  "#3498db",
+                  "#e74c3c",
+                  "#2ecc71",
+                  "#f1c40f",
+                  "#9b59b6",
+                  "#1abc9c",
+                  "#d35400",
+                  "#8e44ad",
+                ],
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+          },
+        });
+      });
+
+      function toggleTheme() {
+        document.body.classList.toggle("light-mode");
+      }
+
+      document.addEventListener("DOMContentLoaded", function () {
+        const trendsSection = document.getElementById("deforestation-trends");
+        const sidebarLinks = document.querySelectorAll(".sidebar ul li");
+
+        sidebarLinks.forEach((link) => {
+          link.addEventListener("click", function () {
+            if (this.innerText.includes("Deforestation Trends")) {
+              trendsSection.style.display = "block";
+            } else {
+              trendsSection.style.display = "none";
+            }
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Image</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+    <style>
+        body {
+            background: linear-gradient(to right, #e0eafc, #cfdef3);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .container {
+            background: #ffffff;
+            padding: 40px 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            margin-top: 60px;
+        }
+
+        h1 {
+            font-weight: bold;
+            color: #333333;
+        }
+
+        label {
+            font-weight: 600;
+            color: #444444;
+        }
+
+        .form-control, .form-control-file {
+            border-radius: 6px;
+            padding: 10px;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 6px;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+        .card {
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+
+        .card:hover {
+            transform: scale(1.02);
+        }
+
+        .card-header {
+            background-color: #007bff;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+
+        .card-body img {
+            border-radius: 6px;
+            max-height: 300px;
+            object-fit: cover;
+        }
+
+        .list-group-item {
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .alert-info {
+            background-color: #e8f4fd;
+            color: #084298;
+            border-left: 5px solid #0d6efd;
+        }
+
+        .alert-danger {
+            border-left: 5px solid #dc3545;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="mb-4">Upload and Process Image</h1>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="region">Region Name</label>
+                <input type="text" name="region" id="region" class="form-control" placeholder="Enter region name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="image">Upload Image</label>
+                <input type="file" name="image" id="image" accept="image/*" class="form-control-file" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Upload</button>
+        </form>
+
+        {% if match_result %}
+            <div class="alert alert-info mt-4">
+                <strong>{{ match_result }}</strong><br>
+                <b>Predicted:</b> {{ predicted_classes|join:", " }}<br>
+                <b>Stored:</b> {{ stored_classes|join:", " }}
+            </div>
+        {% endif %}
+
+        {% if error %}
+            <div class="alert alert-danger mt-4">{{ error }}</div>
+        {% endif %}
+
+        <div class="row mt-4">
+            {% if uploaded_image_url %}
+                <div class="col-md-6 mb-4">
+                    <div class="card">
+                        <div class="card-header">
+                            Uploaded Image
+                        </div>
+                        <div class="card-body text-center">
+                            <img src="{{ uploaded_image_url }}" alt="Uploaded Image" class="img-fluid">
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+
+            {% if unique_labels %}
+                <div class="col-md-6 mb-4">
+                    <div class="card">
+                        <div class="card-header">
+                            Detected Classes
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-group list-group-flush">
+                                {% for label in unique_labels %}
+                                    <li class="list-group-item">{{ label }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+
+</html>

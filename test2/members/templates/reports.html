@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analyst Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --bg-color: #2c3e50;
+            --text-color: white;
+            --card-bg: #34495e;
+            --sidebar-bg: #2c3e50;
+            --highlight: #f1c40f;
+            --button-bg: #e74c3c;
+            --button-hover: #c0392b;
+            --table-header-bg: #f1c40f;
+            --table-text: black;
+            --input-bg: #ecf0f1;
+            --input-border: #3498db;
+        }
+
+        .light-mode {
+            --bg-color: #f4f4f4;
+            --text-color: black;
+            --card-bg: white;
+            --sidebar-bg: #f8f9fa;
+            --highlight: #2c3e50;
+            --button-bg: #007bff;
+            --button-hover: #0056b3;
+            --table-header-bg: #2c3e50;
+            --table-text: white;
+            --input-bg: white;
+            --input-border: #007bff;
+        }
+
+        /* Reset */
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: 0.3s;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 270px;
+            background: var(--sidebar-bg);
+            color: var(--text-color);
+            height: 100vh;
+            position: fixed;
+            padding-top: 20px;
+            box-shadow: 4px 0 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .sidebar h2 {
+            text-align: center;
+            padding-bottom: 15px;
+            font-size: 22px;
+            color: var(--highlight);
+            letter-spacing: 1px;
+            font-weight: bold;
+            border-bottom: 2px solid var(--highlight);
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            padding: 15px;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .sidebar ul li:hover {
+            background: var(--card-bg);
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 280px;
+            padding: 20px;
+        }
+
+        /* Card Styling */
+        .card {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            color: var(--text-color);
+        }
+
+        .card h3 {
+            font-size: 22px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: var(--table-header-bg);
+            padding: 12px;
+            text-align: left;
+            font-size: 18px;
+            color: var(--table-text);
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        /* File Upload */
+        input[type="file"] {
+            border: 2px solid var(--input-border);
+            padding: 8px;
+            border-radius: 5px;
+            background: var(--input-bg);
+            font-size: 16px;
+        }
+
+        /* Buttons */
+        button {
+            background: var(--button-bg);
+            color: white;
+            padding: 12px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background: var(--button-hover);
+        }
+
+        /* Chart Styling */
+        canvas {
+            width: 100% !important;
+            height: auto !important;
+            max-height: 250px;
+        }
+
+        /* Theme Toggle Button */
+        .theme-toggle {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            padding: 8px 15px;
+            font-size: 14px;
+            border-radius: 5px;
+            cursor: pointer;
+            background: var(--highlight);
+            color: var(--bg-color);
+        }
+
+
+        .logout-btn {
+            width: 100%;
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #E63946;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px;
+        }
+
+        .logout-btn:hover {
+            background-color: #C62828;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h2>📊 Analyst Dashboard</h2>
+    
+        <ul>
+            <li><i>🏠</i> Dashboard</li>
+            <li><i>🌲</i> Deforestation Trends</li>
+            {% comment %} <li><i>🤖</i> AI Analysis</li> {% endcomment %}
+            <li><i>🚨</i> Threat Detection</li>
+            
+            <li><i>📜</i> Reports</li>
+        </ul>
+    
+        <!-- Logout button after Reports -->
+        <form method="POST" action="{% url 'logout' %}" style="padding: 10px 20px;">
+            {% csrf_token %}
+            <button type="submit" class="logout-btn">🔓 Logout</button>
+        </form>
+
+
+
+
+
+    </div>
+    
+
+  
+    
+
+    <!-- Theme Toggle Button -->
+    <button class="theme-toggle" onclick="toggleTheme()">🌗 Toggle Theme</button>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        
+        {% comment %} <!-- AI-Based Image Classification -->
+        <section class="card">
+        <!-- Example Card for User Count -->
+        <div class="card shadow p-3 mb-4 rounded bg-light">
+            <h5 class="card-title">Total Registered Users</h5>
+            <p class="card-text">{{ user_count }}</p>
+          </div>
+        </section> {% endcomment %}
+
+       <!-- Total Registered Users Stat Box -->
+       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+       <!-- Enhanced Total Users Box -->
+       <div class="card text-white mb-2 shadow rounded-4" style="max-width: 12rem; min-height: 80px; background: linear-gradient(to top right, #3fd0f4, #e040fb);">
+         <div class="card-body d-flex justify-content-start align-items-center p-2">
+           <i class="fas fa-users fa-2x opacity-75 me-2"></i>
+           <div>
+             <h6 class="card-title mb-2" style="font-size: 1.2rem;">Total Users</h6>
+             <h2 class="fw-bold mb-2" style="font-size: 2rem;">{{ user_count }}</h2>
+           </div>
+         </div>
+       </div>
+       
+
+       
+       
+
+  
+        
+
+        <!-- Illegal Logging & Threat Detection -->
+        <section class="card">
+            <h3>🚨 Illegal Logging & Threat Detection</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Activity</th>
+                        <th>Confidence Score</th>
+                        <th>Location</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Illegal Logging</td>
+                        <td>92%</td>
+                        <td>Amazon Rainforest</td>
+                    </tr>
+                    <tr>
+                        <td>Mining</td>
+                        <td>85%</td>
+                        <td>Congo Basin</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Deforestation Forecasting -->
+        <section class="card">
+            <h3>📉 Deforestation Forecasting</h3>
+            <canvas id="deforestationChart"></canvas>
+        </section>
+
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var ctx = document.getElementById('deforestationChart').getContext('2d');
+
+            var deforestationChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                    datasets: [{
+                        label: 'Predicted Forest Loss (%)',
+                        data: [10, 20, 15, 25, 30, 35],
+                        backgroundColor: ['#3498db', '#e74c3c', '#2ecc71', '#f1c40f', '#9b59b6', '#1abc9c']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+        });
+
+        function toggleTheme() {
+            document.body.classList.toggle('light-mode');
+        }
+    </script>
+
+</body>
+</html>
+
+

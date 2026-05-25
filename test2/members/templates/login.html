@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User Login</title>
+
+    <!-- Font Awesome Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+      integrity="sha512-VuWekLCNNZ9brfnv1ExMRZ1F0zUSLt+OTnhPX+6vBi2eGDU8n0A2KecvDN+45mR9F5eRMXyaHpRZV2ly9FZFbg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+
+    <style>
+      * {
+        box-sizing: border-box;
+        font-family: "Poppins", sans-serif;
+      }
+
+      body {
+        margin: 0;
+        background: linear-gradient(to top right, #3fd0f4, #e040fb);
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+
+      .container {
+        background-color: #fff;
+        width: 100%;
+        max-width: 400px;
+        padding: 35px 30px;
+        border-radius: 20px;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        text-align: center;
+        animation: fadeIn 1s ease-in-out;
+      }
+
+      @keyframes fadeIn {
+        from {
+          transform: translateY(-10px);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+
+      h2 {
+        margin-bottom: 25px;
+        font-weight: 600;
+        color: #333;
+      }
+
+      .form-group {
+        position: relative;
+        margin-bottom: 20px;
+        text-align: left;
+      }
+
+      .form-group i {
+        position: absolute;
+        left: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #999;
+        font-size: 16px;
+      }
+
+      .form-control {
+        width: 100%;
+        padding: 12px 12px 12px 40px;
+        font-size: 14px;
+        border-radius: 10px;
+        border: 1px solid #ccc;
+        transition: 0.3s;
+      }
+
+      .form-control:focus {
+        border-color: #6a11cb;
+        outline: none;
+      }
+
+      .toggle-password {
+        position: absolute;
+        right: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        color: #888;
+        font-size: 16px;
+      }
+
+      button {
+        width: 100%;
+        padding: 12px;
+        background: #6a11cb;
+        color: white;
+        font-size: 15px;
+        font-weight: bold;
+        border: none;
+        border-radius: 10px;
+        transition: 0.3s;
+      }
+
+      button:hover {
+        background: #5017b8;
+      }
+
+      .error-message {
+        color: #e63946;
+        font-weight: bold;
+        margin-bottom: 15px;
+      }
+
+      .register-link {
+        margin-top: 15px;
+        font-size: 14px;
+        color: #444;
+      }
+
+      .register-link a {
+        color: #6a11cb;
+        font-weight: bold;
+        text-decoration: none;
+      }
+
+      .register-link a:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  
+  <body>
+    <div class="container">
+      <h2>User Login</h2>
+
+      {% if messages %} {% for message in messages %}
+      <p
+        class="{% if message.tags == 'error' %}error-message{% elif message.tags == 'success' %}success-message{% endif %}"
+      >
+        {{ message }}
+      </p>
+      {% endfor %} {% endif %}
+
+      <form method="POST">
+        {% csrf_token %}
+
+        <div class="form-group">
+          <i class="fas fa-user"></i>
+          <input
+            type="text"
+            name="username"
+            class="form-control"
+            placeholder="Username"
+            required
+            autocomplete="username"
+          />
+        </div>
+
+        <div class="form-group">
+          <i class="fas fa-lock"></i>
+          <input
+            type="password"
+            name="password"
+            id="password"
+            class="form-control"
+            placeholder="Password"
+            required
+            autocomplete="current-password"
+          />
+          <i
+            class="fas fa-eye toggle-password"
+            onclick="togglePasswordVisibility(this)"
+          ></i>
+        </div>
+
+        <button type="submit">Login</button>
+
+        <div class="register-link">
+          <a href="{% url 'register' %}">Register here</a>
+        </div>
+
+        <div class="form-group" style="text-align: right; margin-bottom: 15px">
+          <a
+            href="{% url 'password_reset' %}"
+            style="font-size: 13px; color: #6a11cb; text-decoration: none"
+            >Forgot Password?</a
+          >
+        </div>
+      </form>
+    </div>
+
+    <script>
+      function togglePasswordVisibility(icon) {
+        const input = document.getElementById("password");
+        if (input.type === "password") {
+          input.type = "text";
+          icon.classList.remove("fa-eye");
+          icon.classList.add("fa-eye-slash");
+        } else {
+          input.type = "password";
+          icon.classList.remove("fa-eye-slash");
+          icon.classList.add("fa-eye");
+        }
+      }
+    </script>
+  </body>
+</html>

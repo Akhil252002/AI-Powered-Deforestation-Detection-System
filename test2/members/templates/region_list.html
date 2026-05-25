@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Region List</title>
+</head>
+<body>
+    <h2>Regions</h2>
+    <ul>
+        {% for region in regions %}
+            <li>{{ region.name }} - {{ region.get_region_type_display }} (Added on {{ region.added_on }})</li>
+        {% empty %}
+            <li>No regions added yet.</li>
+        {% endfor %}
+    </ul>
+    <br>
+    <a href="{% url 'add-region' %}">Add New Region</a>
+</body>
+</html>

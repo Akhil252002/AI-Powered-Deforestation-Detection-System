@@ -1,0 +1,244 @@
+/* General Body and Font Styling */
+body {
+  font-family: 'Rubik', sans-serif;
+  font-size: 16px;
+  background-color: #f8f9fa;
+  color: #333;
+  margin: 0;
+  padding: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Crimson Text', serif;
+  color: #124c4c;
+}
+
+a {
+  color: #124c4c;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #0d3131;
+  text-decoration: none;
+}
+
+/* Navbar */
+.site-navbar {
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.site-logo a {
+  font-size: 24px;
+  font-weight: 700;
+  color: #124c4c;
+}
+
+.site-menu li {
+  display: inline-block;
+  margin-left: 20px;
+}
+
+.site-menu a {
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.btn-getstarted a {
+  background-color: #124c4c;
+  color: #fff !important;
+  padding: 6px 12px;
+  border-radius: 5px;
+}
+
+.btn-getstarted a:hover {
+  background-color: #0d3131;
+}
+
+/* Hero Section */
+.site-blocks-cover {
+  background-size: cover;
+  background-position: center;
+  height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.site-block-cover-content {
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 30px;
+  border-radius: 10px;
+}
+
+.sub-title {
+  font-size: 18px;
+  color: #ffffff;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+/* Banners */
+.banner-wrap {
+  padding: 30px;
+  color: #fff;
+  text-align: center;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-radius: 10px;
+}
+
+.banner-wrap h5 {
+  font-size: 20px;
+  margin-bottom: 15px;
+  font-weight: bold;
+}
+
+.banner-wrap p {
+  font-size: 14px;
+}
+
+/* Section: How It Works */
+.site-section {
+  padding: 60px 0;
+}
+
+.bg-white {
+  background-color: #fff;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
+}
+
+.rounded {
+  border-radius: 10px;
+}
+
+/* Contact Testimonials */
+.testimony blockquote {
+  font-style: italic;
+  font-size: 16px;
+  line-height: 1.6;
+  color: #555;
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.testimony p {
+  font-weight: bold;
+  margin-top: 10px;
+  color: #124c4c;
+}
+
+/* Footer */
+.site-footer {
+  background-color: #032438;
+  color: #ffffff;
+  padding: 60px 0;
+  font-size: 14px;
+}
+
+.footer-heading {
+  font-size: 18px;
+  margin-bottom: 20px;
+  font-weight: 700;
+}
+
+.site-footer a {
+  color: #b1d4d4;
+}
+
+.site-footer a:hover {
+  color: #ffffff;
+  text-decoration: underline;
+}
+
+.site-footer ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.site-footer .address, .phone, .email {
+  margin-bottom: 10px;
+}
+
+.text-uppercase {
+  text-transform: uppercase;
+}
+
+.site-blocks-cover {
+  height: 100vh;
+  background-size: cover;
+  background-position: center center;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.site-block-cover-content {
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+}
+
+.card {
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 30px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
+.card h1 {
+  font-size: 32px;
+  color: #032438;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.card h2.sub-title {
+  font-size: 20px;
+  color: #124c4c;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+.banner-wrap {
+  padding: 30px;
+  border-radius: 10px;
+  color: white;
+  text-align: center;
+  transition: 0.3s ease-in-out;
+}
+
+.banner-wrap:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.footer-heading {
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.site-footer {
+  background-color: #032438;
+  color: #fff;
+  padding: 40px 0;
+}
+
+.site-footer a {
+  color: #8dc6ff;
+  text-decoration: none;
+}
+
+.site-footer a:hover {
+  text-decoration: underline;
+}
+
+h2.text-white {
+  color: #fff !important;
+}
