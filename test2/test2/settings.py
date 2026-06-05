@@ -25,7 +25,11 @@ SECRET_KEY = "django-insecure-n_oe0ljwj$lb32a-4(@yldum*b^4-b98hj#ko(5^+8z+$e_u_^
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "127.0.0.1",
+    "localhost",
+    ".onrender.com",
+]
 
 
 # Application definition
@@ -48,6 +52,8 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
+
 ]
 
 ROOT_URLCONF = "test2.urls"
@@ -120,6 +126,8 @@ USE_TZ = True
 MEDIA_URL ='/media/'
 
 STATIC_URL = '/static/'
+
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
 STATICFILES_DIRS = [
     BASE_DIR / "static",  # assuming you're using pathlib
